@@ -8,6 +8,7 @@ public class MagicTaskHandler : MonoBehaviour {
     List<int> TaskSequence = new List<int>();
     public GameObject[] Node = new GameObject[10];
     public GameObject MagicCircleShoot;
+    public GameObject MagicCircleAppear;
 
     // Use this for initialization
     void Start () {
@@ -24,7 +25,7 @@ public class MagicTaskHandler : MonoBehaviour {
 
     }
 
-    void ActivateNode(GameObject node)
+    public void ActivateNode(GameObject node)
     {
         node.GetComponent<SphereCollider>().enabled = true;
         for(int i = 0; i < node.transform.childCount; i++)

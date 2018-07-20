@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MagicCastingHandler : MonoBehaviour {
     public GameObject[] Spells = new GameObject [1];
+    public GameObject MCTrigger;
     Collider selectedNode;
     public int CircleId = 1;
     bool isBusy = false;
@@ -13,8 +14,14 @@ public class MagicCastingHandler : MonoBehaviour {
     //Shoot
     //
     public GameObject Fire;
+    public GameObject Snow;
+    public GameObject Waterfall;
 
     IEnumerator castTime;
+
+    private void Start()
+    {
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -39,7 +46,7 @@ public class MagicCastingHandler : MonoBehaviour {
         }
     }
 
-    void Cast(GameObject spell)
+    public void Cast(GameObject spell)
     {
         Instantiate(spell);
     }
@@ -48,6 +55,7 @@ public class MagicCastingHandler : MonoBehaviour {
     {
         Debug.Log("Entered Magic Circle");
         GetComponent<AudioSource>().Play();
+        Instantiate(MCTrigger, new Vector3(transform.position.x, transform.position.y, transform.position.z -0.2f), Quaternion.identity, transform);
         float time = 0;
         while (time < 1)
         {

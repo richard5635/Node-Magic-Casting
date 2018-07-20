@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 
 public class NodeHandler : MonoBehaviour {
+    public GameObject NTrigger;
     public int NodeId = 1;
     MagicTaskHandler taskHandler;
     TextMeshProUGUI nodeIdText;
@@ -28,7 +29,7 @@ public class NodeHandler : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         selectedNode = other;
-        nodeWait = NodeWaitingTime();
+        
         if(other.gameObject.name == "HandL" || other.gameObject.name == "HandR")
         {
             switch(NodeId)
@@ -36,9 +37,16 @@ public class NodeHandler : MonoBehaviour {
                 case 1:
                     GetComponent<AudioSource>().Play(); //Sound will not play if deactivated suddenly.
                     taskHandler.SpawnNode(gameObject, taskHandler.Node[NodeId + 1]);
+                    taskHandler.ActivateNode(taskHandler.Node[NodeId + 2]);
                     break;
                 case 2:
+                    nodeWait = NodeWaitingTime(taskHandler.MagicCircleShoot);
                     StartCoroutine(nodeWait);
+                    break;
+                case 3:
+                    nodeWait = NodeWaitingTime(taskHandler.MagicCircleAppear);
+                    StartCoroutine(nodeWait);
+                    taskHandler.MagicCircleAppear.GetComponent<MagicCastingHandler>().Cast(taskHandler.MagicCircleAppear.GetComponent<MagicCastingHandler>().Waterfall);
                     break;
                 default:
                     break;
@@ -55,7 +63,7 @@ public class NodeHandler : MonoBehaviour {
         
     }
 
-    IEnumerator NodeWaitingTime()
+    IEnumerator NodeWaitingTime(GameObject obj)
     {
         //float time = 0;
         //while(time < 1)
@@ -66,7 +74,8 @@ public class NodeHandler : MonoBehaviour {
         //}
         Debug.Log("entered second node");
         GetComponent<AudioSource>().Play();
-        taskHandler.SpawnNode(gameObject, taskHandler.MagicCircleShoot);
+        Instantiate(NTrigger, transform);
+        taskHandler.SpawnNode(gameObject, obj);
         yield return null;
     }
 
